@@ -1,4 +1,9 @@
 using Microsoft.OpenApi.Models;
+using System.Data.Entity;
+using Api.DAL;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,8 +29,22 @@ builder.Services.AddCors(options =>
     options.AddPolicy(allowLocalhost,
         policy => { policy.WithOrigins("http://localhost:3000", "http://localhost"); });
 });
+builder.Services.Configure<DatabaseInitializerOptions>(
+    builder.Configuration.GetSection("DatabaseInitializer"));
+builder.Services.AddDbContext<EmployeeContext>(Options => 
+Options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 
 var app = builder.Build();
+using(var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var DbContext = services.GetRequiredService<EmployeeContext>();
+
+    DbContext.Database.Migrate();
+    
+}
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
