@@ -19,7 +19,31 @@ public class DependentsController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<ApiResponse<GetDependentDto>>> Get(int id)
     {
-        throw new NotImplementedException();
+         var dependents = from d in _employeeContext.Dependents
+                        .Where(de => de.Id == id)
+                        select new GetDependentDto()
+                        {
+                            Id = d.Id,
+                            FirstName = d.FirstName,
+                            LastName = d.LastName,
+                            DateOfBirth = d.DateOfBirth,
+                            Relationship = d.Relationship
+                        };
+        var singleDependent = dependents.ToList();
+        if(singleDependent.Count > 0 )
+        {
+            var response = new ApiResponse<GetDependentDto>
+            {
+                Data = singleDependent.FirstOrDefault(),
+                Success = true
+            };
+            return response;
+        }
+        else 
+        {
+            return NotFound();
+        }
+       
     }
 
     [SwaggerOperation(Summary = "Get all dependents")]
