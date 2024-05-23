@@ -1,4 +1,5 @@
-﻿using Api.DAL;
+﻿using System.Net;
+using Api.DAL;
 using Api.Dtos.Dependent;
 using Api.Dtos.Employee;
 using Api.Models;
@@ -21,7 +22,38 @@ private readonly EmployeeContext _employeeContext;
     [HttpGet("{id}")]
     public async Task<ActionResult<ApiResponse<GetEmployeeDto>>> Get(int id)
     {
-        throw new NotImplementedException();
+        var employeesWithDependents = _employeeContext.Employees
+            .Where(em => em.Id == id)
+            .Select(employee => new GetEmployeeDto
+            {
+                Id = employee.Id,
+                FirstName = employee.FirstName,
+                LastName = employee.LastName,
+                Salary = employee.Salary,
+                DateOfBirth = employee.DateOfBirth,
+                Dependents = employee.Dependents.Select(dependent => new GetDependentDto
+                {
+                    Id = dependent.Id,
+                    FirstName = dependent.FirstName,
+                    LastName = dependent.LastName,
+                    DateOfBirth = dependent.DateOfBirth,
+                    Relationship = dependent.Relationship
+                }).ToList()
+            }).ToList();
+
+            if(employeesWithDependents.Count > 0)
+            {var response = new ApiResponse<GetEmployeeDto> 
+                {
+                    Data = employeesWithDependents.FirstOrDefault(),
+                    Success = true
+                };
+                return response;
+            }
+            else 
+            {
+               
+                return NotFound();
+            }
     }
 
     [SwaggerOperation(Summary = "Get all employees")]
