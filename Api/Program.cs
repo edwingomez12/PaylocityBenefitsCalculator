@@ -40,8 +40,8 @@ using(var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var DbContext = services.GetRequiredService<EmployeeContext>();
-
-    DbContext.Database.Migrate();
+    //DbContext.ClearDatabase();
+    //DbContext.Database.Migrate();
     
 }
 

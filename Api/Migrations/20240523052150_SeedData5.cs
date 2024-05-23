@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Api.Migrations
 {
-    public partial class IniticalCreate : Migration
+    public partial class SeedData5 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -35,22 +35,23 @@ namespace Api.Migrations
                     LastName = table.Column<string>(type: "TEXT", nullable: true),
                     DateOfBirth = table.Column<DateTime>(type: "TEXT", nullable: false),
                     Relationship = table.Column<int>(type: "INTEGER", nullable: false),
-                    GetEmployeeDtoId = table.Column<int>(type: "INTEGER", nullable: true)
+                    EmployeeId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Dependents", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Dependents_Employees_GetEmployeeDtoId",
-                        column: x => x.GetEmployeeDtoId,
+                        name: "FK_Dependents_Employees_EmployeeId",
+                        column: x => x.EmployeeId,
                         principalTable: "Employees",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Dependents_GetEmployeeDtoId",
+                name: "IX_Dependents_EmployeeId",
                 table: "Dependents",
-                column: "GetEmployeeDtoId");
+                column: "EmployeeId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

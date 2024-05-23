@@ -11,15 +11,15 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Api.Migrations
 {
     [DbContext(typeof(EmployeeContext))]
-    [Migration("20240522023100_IniticalCreate")]
-    partial class IniticalCreate
+    [Migration("20240523052509_SeedData")]
+    partial class SeedData
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.30");
 
-            modelBuilder.Entity("Api.Dtos.Dependent.GetDependentDto", b =>
+            modelBuilder.Entity("Api.Models.Dependent", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -28,11 +28,11 @@ namespace Api.Migrations
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("FirstName")
                         .HasColumnType("TEXT");
-
-                    b.Property<int?>("GetEmployeeDtoId")
-                        .HasColumnType("INTEGER");
 
                     b.Property<string>("LastName")
                         .HasColumnType("TEXT");
@@ -42,12 +42,12 @@ namespace Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GetEmployeeDtoId");
+                    b.HasIndex("EmployeeId");
 
                     b.ToTable("Dependents");
                 });
 
-            modelBuilder.Entity("Api.Dtos.Employee.GetEmployeeDto", b =>
+            modelBuilder.Entity("Api.Models.Employee", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -70,14 +70,18 @@ namespace Api.Migrations
                     b.ToTable("Employees");
                 });
 
-            modelBuilder.Entity("Api.Dtos.Dependent.GetDependentDto", b =>
+            modelBuilder.Entity("Api.Models.Dependent", b =>
                 {
-                    b.HasOne("Api.Dtos.Employee.GetEmployeeDto", null)
+                    b.HasOne("Api.Models.Employee", "Employee")
                         .WithMany("Dependents")
-                        .HasForeignKey("GetEmployeeDtoId");
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
                 });
 
-            modelBuilder.Entity("Api.Dtos.Employee.GetEmployeeDto", b =>
+            modelBuilder.Entity("Api.Models.Employee", b =>
                 {
                     b.Navigation("Dependents");
                 });

@@ -29,12 +29,29 @@ private readonly EmployeeContext _employeeContext;
     public async Task<ActionResult<ApiResponse<List<GetEmployeeDto>>>> GetAll()
     {
 
-        var employees = _employeeContext.Employees.ToList();
-      // _employeeContext.Dependents.tol
+        var employeesWithDependents = _employeeContext.Employees
+            .Select(employee => new GetEmployeeDto
+            {
+                Id = employee.Id,
+                FirstName = employee.FirstName,
+                LastName = employee.LastName,
+                Salary = employee.Salary,
+                DateOfBirth = employee.DateOfBirth,
+                Dependents = employee.Dependents.Select(dependent => new GetDependentDto
+                {
+                    Id = dependent.Id,
+                    FirstName = dependent.FirstName,
+                    LastName = dependent.LastName,
+                    DateOfBirth = dependent.DateOfBirth,
+                    Relationship = dependent.Relationship
+                }).ToList()
+            }).ToList();
+
+        
 
         var result = new ApiResponse<List<GetEmployeeDto>>
         {
-            Data = employees,
+            Data = employeesWithDependents,
             Success = true
         };
 

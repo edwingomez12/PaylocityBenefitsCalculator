@@ -6,14 +6,53 @@ using System.Data.Entity;
 using Api.Models;
 using Api.Dtos.Employee;
 using Api.Dtos.Dependent;
+using System.Transactions;
 
 namespace Api.DAL
 {
-    public class EmployeeInitializer 
+    public  class EmployeeInitializer 
     {
-        public void Seed(EmployeeContext context)
+        public  static List<Employee> Seed()
         {
-            var employees = new List<GetEmployeeDto>
+
+            var employeesdto = GetData();
+            var employees = employeesdto.Select(e => new Employee
+            {
+                Id = e.Id,
+                FirstName = e.FirstName,
+                LastName = e.LastName,
+                DateOfBirth = e.DateOfBirth,
+                Salary = e.Salary
+            }).ToList();
+            return employees;
+        }
+
+        public static List<Dependent> SeedDependents()
+        {
+            var employeesdto = GetData();
+            List<Dependent> dependentDtos = new List<Dependent>();
+            foreach(var e in employeesdto)
+            {
+                foreach(var d in e.Dependents)
+                {
+                    var dependent = new Dependent 
+                    {
+                        Id = d.Id,
+                        FirstName = d.FirstName,
+                        LastName = d.LastName,
+                        EmployeeId = e.Id,
+                        DateOfBirth = d.DateOfBirth,
+                        Relationship = d.Relationship
+                    };
+                    dependentDtos.Add(dependent);
+                }
+            }
+            return dependentDtos;
+        }
+
+        private static List<GetEmployeeDto> GetData()
+        {
+                return new List<GetEmployeeDto>
         {
             new()
             {
@@ -78,8 +117,6 @@ namespace Api.DAL
                 }
             }
         };
-            employees.ForEach(e => context.Employees.Add(e));
-            context.SaveChanges();
         }
     }
 }
