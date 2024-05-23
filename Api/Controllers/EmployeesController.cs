@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Data.Entity.Validation;
+using System.Net;
 using Api.DAL;
 using Api.Dtos.Dependent;
 using Api.Dtos.Employee;
@@ -88,5 +89,41 @@ private readonly EmployeeContext _employeeContext;
         };
 
         return result;
+    }
+
+    [SwaggerOperation(Summary = "Calculate paycheck")]
+    [HttpGet("Calculate/{id}")]
+    public async Task<ActionResult<ApiResponse<decimal>>> Calculate(int id)
+    {
+        var employeesWithDependents = _employeeContext.Employees
+            .Where(em => em.Id == id)
+            .Select(employee => new GetEmployeeDto
+            {
+                Id = employee.Id,
+                FirstName = employee.FirstName,
+                LastName = employee.LastName,
+                Salary = employee.Salary,
+                DateOfBirth = employee.DateOfBirth,
+                Dependents = employee.Dependents.Select(dependent => new GetDependentDto
+                {
+                    Id = dependent.Id,
+                    FirstName = dependent.FirstName,
+                    LastName = dependent.LastName,
+                    DateOfBirth = dependent.DateOfBirth,
+                    Relationship = dependent.Relationship
+                }).ToList()
+            }).ToList();
+        var salary = employeesWithDependents.FirstOrDefault().Salary;
+        var age = DateTime.Now - employeesWithDependents.FirstOrDefault().DateOfBirth;
+        var dependentCount = employeesWithDependents.FirstOrDefault().Dependents.Count;
+        //do calulations based on requirements
+        salary = salary - (1000 *12);
+        salary = salary - (600 * dependentCount);
+        salary = salary / 26;
+        return new ApiResponse<decimal>
+        {
+            Data = salary,
+            Success = true
+        };
     }
 }
