@@ -25,7 +25,6 @@
 /Users/edwingomez/Downloads/PaylocityBackEndChallengeSeed-main/PaylocityBenefitsCalculator/Api/obj/Debug/net6.0/staticwebassets/msbuild.buildTransitive.Api.props
 /Users/edwingomez/Downloads/PaylocityBackEndChallengeSeed-main/PaylocityBenefitsCalculator/Api/obj/Debug/net6.0/staticwebassets.pack.json
 /Users/edwingomez/Downloads/PaylocityBackEndChallengeSeed-main/PaylocityBenefitsCalculator/Api/obj/Debug/net6.0/scopedcss/bundle/Api.styles.css
-/Users/edwingomez/Downloads/PaylocityBackEndChallengeSeed-main/PaylocityBenefitsCalculator/Api/obj/Debug/net6.0/Api.csproj.CopyComplete
 /Users/edwingomez/Downloads/PaylocityBackEndChallengeSeed-main/PaylocityBenefitsCalculator/Api/obj/Debug/net6.0/Api.dll
 /Users/edwingomez/Downloads/PaylocityBackEndChallengeSeed-main/PaylocityBenefitsCalculator/Api/obj/Debug/net6.0/refint/Api.dll
 /Users/edwingomez/Downloads/PaylocityBackEndChallengeSeed-main/PaylocityBenefitsCalculator/Api/obj/Debug/net6.0/Api.pdb
@@ -105,3 +104,4 @@
 /Users/edwingomez/Downloads/PaylocityBackEndChallengeSeed-main/PaylocityBenefitsCalculator/Api/bin/Debug/net6.0/runtimes/win-arm64/native/e_sqlite3.dll
 /Users/edwingomez/Downloads/PaylocityBackEndChallengeSeed-main/PaylocityBenefitsCalculator/Api/bin/Debug/net6.0/runtimes/win-x64/native/e_sqlite3.dll
 /Users/edwingomez/Downloads/PaylocityBackEndChallengeSeed-main/PaylocityBenefitsCalculator/Api/bin/Debug/net6.0/runtimes/win-x86/native/e_sqlite3.dll
+/Users/edwingomez/Downloads/PaylocityBackEndChallengeSeed-main/PaylocityBenefitsCalculator/Api/obj/Debug/net6.0/Api.csproj.Up2Date

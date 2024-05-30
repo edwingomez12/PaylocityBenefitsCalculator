@@ -43,7 +43,8 @@ private readonly EmployeeContext _employeeContext;
             }).ToList();
 
             if(employeesWithDependents.Count > 0)
-            {var response = new ApiResponse<GetEmployeeDto> 
+            {
+                var response = new ApiResponse<GetEmployeeDto> 
                 {
                     Data = employeesWithDependents.FirstOrDefault(),
                     Success = true
@@ -92,8 +93,8 @@ private readonly EmployeeContext _employeeContext;
     }
 
     [SwaggerOperation(Summary = "Calculate paycheck")]
-    [HttpGet("Calculate/{id}")]
-    public async Task<ActionResult<ApiResponse<decimal>>> Calculate(int id)
+    [HttpGet("CalculatePaycheck/{id}")]
+    public async Task<ActionResult<ApiResponse<decimal>>> CalculatePaycheck(int id)
     {
         var employeesWithDependents = _employeeContext.Employees
             .Where(em => em.Id == id)
@@ -113,17 +114,49 @@ private readonly EmployeeContext _employeeContext;
                     Relationship = dependent.Relationship
                 }).ToList()
             }).ToList();
-        var salary = employeesWithDependents.FirstOrDefault().Salary;
-        var age = DateTime.Now - employeesWithDependents.FirstOrDefault().DateOfBirth;
-        var dependentCount = employeesWithDependents.FirstOrDefault().Dependents.Count;
-        //do calulations based on requirements
-        salary = salary - (1000 *12);
-        salary = salary - (600 * dependentCount);
-        salary = salary / 26;
+        
         return new ApiResponse<decimal>
         {
-            Data = salary,
+            Data = CalculatePaycheck(employeesWithDependents.FirstOrDefault()),
             Success = true
         };
+    }
+
+    private decimal CalculatePaycheck(GetEmployeeDto employee)
+    {
+        decimal employeeBaseCostPerMonth = 1000m;
+        decimal dependentCostPerMonth = 600m;
+        decimal highSalaryThreshold = 80000m;
+        decimal highSalaryAdditionalPercentage = 0.02m;
+        decimal dependentAdditionalCostOver50 = 200m;
+
+        decimal monthlyEmployeeCost = employeeBaseCostPerMonth;
+
+        decimal monthlyDependentsCost = 0;
+        foreach (var dependent in employee.Dependents)
+        {
+            monthlyDependentsCost += dependentCostPerMonth;
+            int age = DateTime.Now.Year - dependent.DateOfBirth.Year;
+            if (age > 50)
+            {
+                monthlyDependentsCost += dependentAdditionalCostOver50;
+            }
+        }
+
+        decimal additionalHighSalaryCost = 0;
+        if (employee.Salary > highSalaryThreshold)
+        {
+            additionalHighSalaryCost = employee.Salary * highSalaryAdditionalPercentage / 12;
+        }
+
+        decimal totalMonthlyCost = monthlyEmployeeCost + monthlyDependentsCost + additionalHighSalaryCost;
+
+        decimal totalYearlyCost = totalMonthlyCost * 12;
+
+        decimal paycheckDeduction = totalYearlyCost / 26;
+
+        decimal paycheck = (employee.Salary / 26) - paycheckDeduction;
+
+        return paycheck;
     }
 }

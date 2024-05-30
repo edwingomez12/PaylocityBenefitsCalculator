@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "xOo00iuPXDUYsYRU0T3SssZHAuphdUNrEgNUoFHDlS6Xh/ap1xnQwtG0egw3KgjjFl/3DyFtlaBCIwKHQ+bylQ==",
+  "dgSpecHash": "p5OULEzMdj0=",
   "success": true,
   "projectFilePath": "/Users/edwingomez/Downloads/PaylocityBackEndChallengeSeed-main/PaylocityBenefitsCalculator/ApiTests/ApiTests.csproj",
   "expectedPackageFiles": [
@@ -157,7 +157,9 @@
     "/Users/edwingomez/.nuget/packages/xunit.core/2.4.1/xunit.core.2.4.1.nupkg.sha512",
     "/Users/edwingomez/.nuget/packages/xunit.extensibility.core/2.4.1/xunit.extensibility.core.2.4.1.nupkg.sha512",
     "/Users/edwingomez/.nuget/packages/xunit.extensibility.execution/2.4.1/xunit.extensibility.execution.2.4.1.nupkg.sha512",
-    "/Users/edwingomez/.nuget/packages/xunit.runner.visualstudio/2.4.3/xunit.runner.visualstudio.2.4.3.nupkg.sha512"
+    "/Users/edwingomez/.nuget/packages/xunit.runner.visualstudio/2.4.3/xunit.runner.visualstudio.2.4.3.nupkg.sha512",
+    "/Users/edwingomez/.nuget/packages/microsoft.netcore.app.ref/6.0.30/microsoft.netcore.app.ref.6.0.30.nupkg.sha512",
+    "/Users/edwingomez/.nuget/packages/microsoft.aspnetcore.app.ref/6.0.30/microsoft.aspnetcore.app.ref.6.0.30.nupkg.sha512"
   ],
   "logs": []
 }

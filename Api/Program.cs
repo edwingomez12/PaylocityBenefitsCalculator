@@ -1,9 +1,6 @@
 using Microsoft.OpenApi.Models;
-using System.Data.Entity;
 using Api.DAL;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,8 +37,6 @@ using(var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var DbContext = services.GetRequiredService<EmployeeContext>();
-    //DbContext.ClearDatabase();
-    //DbContext.Database.Migrate();
     
 }
 

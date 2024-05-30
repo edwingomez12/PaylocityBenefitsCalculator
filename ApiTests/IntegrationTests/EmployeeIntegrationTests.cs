@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Api.Dtos.Dependent;
 using Api.Dtos.Employee;
 using Api.Models;
+using Newtonsoft.Json;
 using Xunit;
 
 namespace ApiTests.IntegrationTests;
@@ -105,6 +106,21 @@ public class EmployeeIntegrationTests : IntegrationTest
     {
         var response = await HttpClient.GetAsync($"/api/v1/employees/{int.MinValue}");
         await response.ShouldReturn(HttpStatusCode.NotFound);
+    }
+
+    [Fact]
+    public async Task WhenAskedToCalculatePaycheck()
+    {
+        //arrange
+        decimal paycheck = 2189.1506m;
+
+        //act
+        var response = await HttpClient.GetAsync($"/api/v1/Employees/CalculatePaycheck/2");
+        var content = await response.Content.ReadAsStringAsync();
+        var responseBody = JsonConvert.DeserializeObject<ApiResponse<decimal>>(content);
+        //assert 
+        Assert.Equal(responseBody.Data, paycheck);
+        
     }
 }
 
